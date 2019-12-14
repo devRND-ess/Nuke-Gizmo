@@ -1,0 +1,99 @@
+#! C:/Program Files/Nuke10.0v6/nuke-10.0.6.dll -nx
+version 10.0 v6
+Gizmo {
+ inputs 2
+}
+ Input {
+  inputs 0
+  name Base_map
+  xpos 153
+  ypos -50
+ }
+ Expression {
+  expr0 r*2-1
+  expr1 g*2-1
+  expr2 b*2
+  name Expression1
+  xpos 153
+  ypos 18
+ }
+set Ned5bd000 [stack 0]
+push $Ned5bd000
+ Input {
+  inputs 0
+  name Detail_map
+  xpos 301
+  ypos -62
+  number 1
+ }
+ Expression {
+  expr0 (r*(-2))+1
+  expr1 (g*(-2))+1
+  expr2 (b*(2))-1
+  name Expression2
+  xpos 301
+  ypos 7
+ }
+set Ned5bc000 [stack 0]
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Ar*Br+Ag*Bg+Ab*Bb
+  name dot_product_t_u
+  xpos 301
+  ypos 61
+ }
+push $Ned5bd000
+ Shuffle {
+  red blue
+  green blue
+  name Shuffle1
+  xpos 153
+  ypos 60
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge1
+  xpos 301
+  ypos 105
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge2
+  selected true
+  xpos 153
+  ypos 164
+ }
+set N35ac2800 [stack 0]
+push $Ned5bc000
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge3
+  xpos 301
+  ypos 230
+ }
+ Expression {
+  expr0 r*0.5+0.5
+  expr1 g*0.5+0.5
+  expr2 b*0.5+0.5
+  name Expression3
+  xpos 301
+  ypos 256
+ }
+ Output {
+  name Output1
+  xpos 301
+  ypos 356
+ }
+push $N35ac2800
+ Viewer {
+  frame_range 1-100
+  viewerProcess ACES_LUT
+  name Viewer1
+  xpos 153
+  ypos -24
+ }
+end_group
